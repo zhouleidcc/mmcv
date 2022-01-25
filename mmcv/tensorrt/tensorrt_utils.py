@@ -4,13 +4,13 @@ import warnings
 import onnx
 import tensorrt as trt
 import torch
-
+import numpy as np
 from .preprocess import preprocess_onnx
 
 
 def onnx2trt(onnx_model,
              opt_shape_dict,
-             log_level=trt.Logger.ERROR,
+             log_level=trt.Logger.VERBOSE,
              fp16_mode=False,
              max_workspace_size=0,
              device_id=0):
@@ -55,7 +55,6 @@ def onnx2trt(onnx_model,
         onnx_model = onnx.load(onnx_model)
 
     onnx_model = preprocess_onnx(onnx_model)
-
     if not parser.parse(onnx_model.SerializeToString()):
         error_msgs = ''
         for error in range(parser.num_errors):
